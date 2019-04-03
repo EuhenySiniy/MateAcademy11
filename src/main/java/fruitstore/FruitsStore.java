@@ -37,17 +37,18 @@ public class FruitsStore {
     }
 
     private List<Fruits> filterByType(FruitsType type, List<Fruits> list) {
-        List<Fruits> listOfFruits = list.stream().filter(fruit -> fruit.getFruitsType()
-                .equals(type)).collect(Collectors.toList());
-        return listOfFruits;
+        List<Fruits> fruitsList;
+        return fruitsList = list.stream().filter(fruit -> fruit.getFruitsType()
+                .equals(type))
+                .collect(Collectors.toList());
     }
 
     public void addFruits(String toJsonFile) {
-        List<Fruits> supply;
         try (FileInputStream inputStream = new FileInputStream(toJsonFile)) {
-            supply = objectMapper.readValue(inputStream, new TypeReference<List<Fruits>>() {
+            List<Fruits> fruitList;
+            fruitList = objectMapper.readValue(inputStream, new TypeReference<List<Fruits>>() {
             });
-            fruits.addAll(supply);
+            fruits.addAll(fruitList);
         } catch (IOException e) {
             LOGGER.error("Exception throw: ", e);
         }
@@ -88,14 +89,10 @@ public class FruitsStore {
     }
 
     public List<Fruits> getAddedFruits(LocalDate date) {
-        List<Fruits> listOfAddedFruits = new ArrayList<>();
-        fruits.forEach(fruit -> {
-            LocalDate dateOfDelivery = FruitUtil.dateToString(fruit.getDateOfDelivery());
-            if (dateOfDelivery.isEqual(date)) {
-                listOfAddedFruits.add(fruit);
-            }
-        });
-        return listOfAddedFruits;
+        List<Fruits> listOfAddedFruits;
+        return listOfAddedFruits = fruits.stream()
+                .filter(fruits -> fruits.getDateOfDelivery().equals(date))
+                .collect(Collectors.toList());
     }
 
     public List<Fruits> getAddedFruits(LocalDate date, FruitsType type) {
